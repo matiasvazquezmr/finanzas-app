@@ -15,21 +15,21 @@ export function renderCarga() {
         </div>
         
         <!-- Contenedor del form para animaciones de swipe interno -->
-        <form id="mainForm" class="overflow-hidden">
+        <form id="mainForm" class="overflow-hidden w-full">
             <input type="hidden" id="tipoRegistro" value="gasto">
             
-            <!-- CORRECCIÓN FECHA: min-w-0 y w-[35%] / w-[65%] -->
-            <div class="flex gap-3 mb-3 w-full">
-                <div class="w-[35%] shrink-0">
+            <!-- CORRECCIÓN FECHA: CSS Grid (3 columnas) para evitar que desborde la pantalla -->
+            <div class="grid grid-cols-3 gap-3 mb-3 w-full">
+                <div class="col-span-1">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Moneda</label>
                     <select id="moneda" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-2 border bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                         <option value="ARS">ARS</option>
                         <option value="USD">USD</option>
                     </select>
                 </div>
-                <div class="w-[65%] min-w-0">
+                <div class="col-span-2">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha</label>
-                    <input type="date" id="fecha" required class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-2 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+                    <input type="date" id="fecha" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-2 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                 </div>
             </div>
             
