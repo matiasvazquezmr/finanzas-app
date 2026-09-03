@@ -1,15 +1,23 @@
 import { fetchData } from '../api.js';
-import { currencyFormatter } from '../Utils.js';
+import { currencyFormatter } from '../utils.js';
 import { meses } from '../config.js';
 
 let chartDona = null;
 let chartBarras = null;
+let cachedData = null; // Guardamos la data en memoria para no pegarle a Sheets al cambiar la moneda
 
 export function renderDashboard() {
     const container = document.getElementById('view-dash');
     container.innerHTML = `
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-base font-bold text-slate-800 tracking-tight">Resumen Mensual <span class="text-slate-400 font-medium text-xs">(ARS)</span></h2>
+            <h2 class="text-base font-bold text-slate-800 tracking-tight flex items-center gap-2">
+                Resumen
+                <!-- NUEVO SELECTOR DE MONEDA -->
+                <select id="dash-moneda" class="bg-slate-200/60 text-slate-700 text-[10px] font-bold rounded-lg px-2 py-1 outline-none border-none">
+                    <option value="ARS">ARS</option>
+                    <option value="USD">USD</option>
+                </select>
+            </h2>
             <button id="btn-update-dash" class="bg-white border border-slate-200 text-indigo-600 shadow-sm text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all">
                 🔄 Actualizar
             </button>
@@ -46,26 +54,32 @@ export function renderDashboard() {
         </div>
     `;
 
-    document.getElementById('btn-update-dash').addEventListener('click', loadDashboardData);
+    document.getElementById('btn-update-dash').addEventListener('click', () => loadDashboardData(true));
+    document.getElementById('dash-moneda').addEventListener('change', () => loadDashboardData(false));
 }
 
-export async function loadDashboardData() {
+export async function loadDashboardData(forceRefresh = false) {
     const statusEl = document.getElementById('dash-status');
+    const selectedMoneda = document.getElementById('dash-moneda').value;
     
     try {
-        statusEl.className = "mb-3 text-center py-2 px-3 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 block";
-        statusEl.innerText = "Cargando datos...";
+        if (!cachedData || forceRefresh) {
+            statusEl.className = "mb-3 text-center py-2 px-3 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 block";
+            statusEl.innerText = "Sincronizando...";
+            cachedData = await fetchData();
+            statusEl.classList.replace('block', 'hidden');
+        }
 
-        const data = await fetchData();
+        const data = cachedData;
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
-        const ARSFormatter = currencyFormatter('ARS');
+        const Formatter = currencyFormatter(selectedMoneda);
         
         let sumIngresos = 0, sumGastos = 0, sueldoActual = 0, sueldoAnterior = 0;
         let gastosPorCat = {};
 
         data.ingresos.forEach(i => {
-            if(i['Moneda'] !== 'ARS') return; 
+            if(i['Moneda'] !== selectedMoneda) return; 
             let d = new Date(i.Fecha);
             if(d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
                 sumIngresos += parseFloat(i.Monto || 0);
@@ -77,7 +91,7 @@ export async function loadDashboardData() {
         });
 
         data.gastos.forEach(g => {
-            if(g['Moneda'] !== 'ARS') return; 
+            if(g['Moneda'] !== selectedMoneda) return; 
             let d = new Date(g.Fecha);
             if(d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
                 let val = parseFloat(g.Monto || 0);
@@ -87,9 +101,9 @@ export async function loadDashboardData() {
             }
         });
 
-        document.getElementById('dash-ingresos').innerText = ARSFormatter.format(sumIngresos);
-        document.getElementById('dash-gastos').innerText = ARSFormatter.format(sumGastos);
-        document.getElementById('dash-saldo').innerText = ARSFormatter.format(sumIngresos - sumGastos);
+        document.getElementById('dash-ingresos').innerText = Formatter.format(sumIngresos).replace(/[a-zA-Z\s]/g, "");
+        document.getElementById('dash-gastos').innerText = Formatter.format(sumGastos).replace(/[a-zA-Z\s]/g, "");
+        document.getElementById('dash-saldo').innerText = Formatter.format(sumIngresos - sumGastos).replace(/[a-zA-Z\s]/g, "");
         
         let variacionSueldo = "-";
         if(sueldoAnterior > 0) {
@@ -99,8 +113,6 @@ export async function loadDashboardData() {
             el.className = `text-base font-black tracking-tight mt-0.5 ${varPct >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
         }
         document.getElementById('dash-sueldo').innerText = variacionSueldo;
-
-        statusEl.classList.replace('block', 'hidden');
 
         let topGastos = Object.entries(gastosPorCat).sort((a,b) => b[1] - a[1]).slice(0,5);
         if(chartDona) chartDona.destroy();
@@ -118,9 +130,9 @@ export async function loadDashboardData() {
         });
 
         let evoMeses = Array(12).fill(0).map(()=>({ing:0, gas:0, aho:0}));
-        data.ingresos.forEach(i => { let m=new Date(i.Fecha).getMonth(); if(new Date(i.Fecha).getFullYear()===currentYear && i['Moneda']==='ARS') evoMeses[m].ing += parseFloat(i.Monto||0);});
-        data.gastos.forEach(g => { let m=new Date(g.Fecha).getMonth(); if(new Date(g.Fecha).getFullYear()===currentYear && g['Moneda']==='ARS') evoMeses[m].gas += parseFloat(g.Monto||0);});
-        data.ahorros.forEach(a => { let m=new Date(a.Fecha).getMonth(); if(new Date(a.Fecha).getFullYear()===currentYear && a['Moneda']==='ARS') evoMeses[m].aho += parseFloat(a['Total Invertido']||0);});
+        data.ingresos.forEach(i => { let m=new Date(i.Fecha).getMonth(); if(new Date(i.Fecha).getFullYear()===currentYear && i['Moneda']===selectedMoneda) evoMeses[m].ing += parseFloat(i.Monto||0);});
+        data.gastos.forEach(g => { let m=new Date(g.Fecha).getMonth(); if(new Date(g.Fecha).getFullYear()===currentYear && g['Moneda']===selectedMoneda) evoMeses[m].gas += parseFloat(g.Monto||0);});
+        data.ahorros.forEach(a => { let m=new Date(a.Fecha).getMonth(); if(new Date(a.Fecha).getFullYear()===currentYear && a['Moneda']===selectedMoneda) evoMeses[m].aho += parseFloat(a['Total Invertido']||0);});
 
         if(chartBarras) chartBarras.destroy();
         chartBarras = new Chart(document.getElementById('barChart'), {
@@ -139,6 +151,6 @@ export async function loadDashboardData() {
     } catch (err) {
         console.error("Error crítico cargando datos:", err);
         statusEl.className = "mb-3 text-center py-2 px-3 rounded-lg text-xs font-bold bg-rose-50 text-rose-600 border border-rose-100 block";
-        statusEl.innerText = "Error: Configurá la URL de Apps Script";
+        statusEl.innerText = "Error cargando la info.";
     }
 }

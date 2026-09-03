@@ -1,5 +1,5 @@
 import { fetchData } from '../api.js';
-import { currencyFormatter } from '../Utils.js';
+import { currencyFormatter } from '../utils.js';
 
 export function renderHistorial() {
     const container = document.getElementById('view-history');

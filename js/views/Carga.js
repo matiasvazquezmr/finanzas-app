@@ -1,7 +1,7 @@
 import { getFormGastoHTML, initFormGasto } from '../components/FormGasto.js';
 import { getFormIngresoHTML, initFormIngreso } from '../components/FormIngreso.js';
 import { getFormAhorroHTML, initFormAhorro } from '../components/FormAhorro.js';
-import { currencyFormatter, showToast } from '../Utils.js';
+import { currencyFormatter, showToast } from '../utils.js';
 import { postData } from '../api.js';
 
 export function renderCarga() {
@@ -13,22 +13,28 @@ export function renderCarga() {
             <button id="btn-tipo-ingreso" class="w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]">Ingreso</button>
             <button id="btn-tipo-ahorro" class="w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]">Ahorro</button>
         </div>
-        <form id="mainForm">
+        
+        <!-- Contenedor del form para animaciones de swipe interno -->
+        <form id="mainForm" class="overflow-hidden">
             <input type="hidden" id="tipoRegistro" value="gasto">
-            <div class="flex gap-3 mb-3">
-                <div class="w-1/3">
+            
+            <!-- CORRECCIÓN FECHA: min-w-0 y w-[35%] / w-[65%] -->
+            <div class="flex gap-3 mb-3 w-full">
+                <div class="w-[35%] shrink-0">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Moneda</label>
                     <select id="moneda" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-2 border bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                         <option value="ARS">ARS</option>
                         <option value="USD">USD</option>
                     </select>
                 </div>
-                <div class="w-2/3">
+                <div class="w-[65%] min-w-0">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha</label>
-                    <input type="date" id="fecha" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-3 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+                    <input type="date" id="fecha" required class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-2 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                 </div>
             </div>
+            
             <div id="dynamicFields"></div>
+            
             <div class="mb-3" id="montoContainer">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" id="montoLabel">Monto Total</label>
                 <div class="relative">

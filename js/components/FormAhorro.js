@@ -1,5 +1,5 @@
 import { getCategorias } from '../config.js';
-import { currencyFormatter } from '../Utils.js';
+import { currencyFormatter } from '../utils.js';
 
 export function getFormAhorroHTML() {
     const catAhorros = getCategorias().ahorros;
