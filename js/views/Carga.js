@@ -38,8 +38,8 @@ export function renderCarga() {
             <div class="mb-3" id="montoContainer">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" id="montoLabel">Monto Total</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-medium text-base" id="currencySymbol">$</div>
-                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="currency-input block w-full rounded-xl border border-slate-200 shadow-sm pl-8 pr-3 py-2 focus:ring-2 focus:ring-indigo-500/20 bg-white outline-none">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-medium text-base whitespace-nowrap" id="currencySymbol">$</div>
+                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="currency-input block w-full min-w-0 rounded-xl border border-slate-200 shadow-sm pl-8 pr-3 py-2 focus:ring-2 focus:ring-indigo-500/20 bg-white outline-none">
                     <input type="hidden" id="montoReal" name="monto">
                 </div>
             </div>
@@ -110,10 +110,14 @@ function setupCurrencyInput() {
 
     const updateSymbol = () => {
         symbolSpan.innerText = currencySelect.value === 'USD' ? 'u$s' : '$';
+        // El símbolo puede cambiar de ancho (ej: "$" vs "u$s"), así que el
+        // padding del input se recalcula para que el monto nunca quede tapado.
+        input.style.paddingLeft = `${symbolSpan.getBoundingClientRect().width + 12}px`;
         input.dispatchEvent(new Event('input'));
     };
 
     currencySelect.addEventListener('change', updateSymbol);
+    updateSymbol();
 
     input.addEventListener('input', (e) => {
         if(input.readOnly) return;
