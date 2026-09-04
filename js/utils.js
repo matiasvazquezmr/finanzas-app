@@ -6,7 +6,7 @@ export const currencyFormatter = (currency) => new Intl.NumberFormat('es-AR', {
 
 export function showToast(message = "Registro guardado") {
     const toast = document.getElementById('toast');
-    toast.innerHTML = `<span class="text-emerald-400">✓</span> ${message}`;
+    toast.innerHTML = `<span class="text-teal-400">✓</span> ${message}`;
     toast.style.opacity = '1';
     toast.style.transform = 'translate(-50%, 10px)';
     setTimeout(() => {

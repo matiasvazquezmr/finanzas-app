@@ -6,7 +6,7 @@ import { setCategorias } from './config.js';
 
 Chart.defaults.font.family = "'Inter', sans-serif";
 Chart.defaults.color = '#94a3b8';
-Chart.defaults.scale.grid.color = '#f1f5f9';
+Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.08)';
 
 document.addEventListener('DOMContentLoaded', async () => {
     
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(data.categorias) setCategorias(data.categorias);
         document.getElementById('initial-loader').classList.add('hidden');
     } catch (e) {
-        document.getElementById('initial-loader').innerHTML = '<p class="text-rose-600 font-bold px-4 text-center">Error de conexión.</p>';
+        document.getElementById('initial-loader').innerHTML = '<p class="text-rose-400 font-bold px-4 text-center">Error de conexión.</p>';
         return;
     }
 
@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const changeTab = (targetId, animationClass = 'slide-next') => {
         navButtons.forEach(b => {
-            b.classList.remove('active', 'text-indigo-600');
+            b.classList.remove('active', 'text-violet-400');
             b.classList.add('text-slate-400');
         });
         const btn = document.querySelector(`.nav-btn[data-tab="${targetId}"]`);
         if(btn) {
-            btn.classList.add('active', 'text-indigo-600');
+            btn.classList.add('active', 'text-violet-400');
             btn.classList.remove('text-slate-400');
         }
         

@@ -5,14 +5,14 @@ export function getFormGastoHTML() {
     return `
         <div class="mb-3">
             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Categoría Principal</label>
-            <select id="catPrincipal" required class="block w-full rounded-xl border border-slate-200 shadow-sm py-2 px-3 bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+            <select id="catPrincipal" required class="glass-input glass-select block w-full rounded-xl border py-2 px-3 font-medium text-sm outline-none">
                 <option value="">Seleccione...</option>
                 ${Object.keys(catGastos).map(cat => `<option value="${cat}">${cat}</option>`).join('')}
             </select>
         </div>
         <div class="mb-3" id="divSubcat" style="display:none;">
             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Subcategoría</label>
-            <select id="subcategoria" class="block w-full rounded-xl border border-slate-200 shadow-sm py-2 px-3 bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none"></select>
+            <select id="subcategoria" class="glass-input glass-select block w-full rounded-xl border py-2 px-3 font-medium text-sm outline-none"></select>
         </div>
     `;
 }

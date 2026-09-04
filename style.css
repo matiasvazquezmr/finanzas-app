@@ -1,29 +1,102 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* BLOQUEO DE ARRASTRE Y REBOTE NATIVO */
-html, body { 
-    font-family: 'Inter', sans-serif; 
-    overscroll-behavior: none; 
+/* =========================================================
+   DISEÑO "GLASS" ESTILO iOS — fondo oscuro + vidrio esmerilado
+   Paleta: violeta/cian (marca) · teal (ingreso) · naranja (gasto)
+           · cian (ahorro) · rosa (errores)
+   ========================================================= */
+
+:root { color-scheme: dark; }
+
+html, body {
+    font-family: 'Inter', sans-serif;
+    /* BLOQUEO DE ARRASTRE Y REBOTE NATIVO */
+    overscroll-behavior: none;
     position: fixed;
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
+body {
+    background: radial-gradient(circle at 25% 15%, #241a4a 0%, transparent 45%),
+                radial-gradient(circle at 80% 85%, #0d3b45 0%, transparent 50%),
+                #020617;
+}
+
+input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
-.nav-btn.active { color: #4f46e5; }
+.nav-btn.active { color: #a78bfa; }
 
 #toast { transition: opacity 0.3s ease-in-out, transform 0.3s ease; }
 
-.currency-input { font-size: 1.25rem; font-weight: 700; color: #0f172a; letter-spacing: -0.025em; }
-.currency-input::placeholder { font-weight: 400; font-size: 1rem; color: #94a3b8; }
+.currency-input { font-size: 1.25rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.025em; }
+.currency-input::placeholder { font-weight: 400; font-size: 1rem; color: #64748b; }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* --- Blobs de fondo tipo "aurora" (glow difuminado detrás del vidrio) --- */
+.aurora-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    pointer-events: none;
+    animation: auroraFloat 14s ease-in-out infinite alternate;
+}
+
+/* --- Superficies de vidrio esmerilado --- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+}
+
+.glass-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* --- Inputs / selects de vidrio --- */
+.glass-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #f1f5f9;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.glass-input::placeholder { color: #64748b; }
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(167, 139, 250, 0.5);
+}
+/* El navegador pinta el ícono nativo del date picker en negro por defecto;
+   invert+brightness lo vuelve legible sobre el vidrio oscuro. */
+.glass-input::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.4);
+    opacity: 0.8;
+}
+
+.glass-select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+    padding-right: 2.2rem;
+}
+.glass-select option { background-color: #0f172a; color: #f1f5f9; }
 
 /* Animaciones de Deslizamiento (Swipe Glass) */
 .slide-next { animation: slideNext 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
@@ -41,4 +114,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(3px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes auroraFloat {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(15px, -20px) scale(1.08); }
 }

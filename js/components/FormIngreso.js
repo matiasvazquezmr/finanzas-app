@@ -5,13 +5,13 @@ export function getFormIngresoHTML() {
     return `
         <div class="mb-3">
             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mes de Referencia</label>
-            <select id="mesRef" required class="block w-full rounded-xl border border-slate-200 shadow-sm py-2 px-3 bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+            <select id="mesRef" required class="glass-input glass-select block w-full rounded-xl border py-2 px-3 font-medium text-sm outline-none">
                 ${meses.map(m => `<option value="${m}">${m}</option>`).join('')}
             </select>
         </div>
         <div class="mb-3">
             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Categoría</label>
-            <select id="catIngreso" required class="block w-full rounded-xl border border-slate-200 shadow-sm py-2 px-3 bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+            <select id="catIngreso" required class="glass-input glass-select block w-full rounded-xl border py-2 px-3 font-medium text-sm outline-none">
                 ${catIngresos.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
             </select>
         </div>

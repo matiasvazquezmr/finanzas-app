@@ -7,46 +7,46 @@ import { postData } from '../api.js';
 export function renderCarga() {
     const container = document.getElementById('view-home');
     container.innerHTML = `
-        <h2 class="text-base font-bold mb-3 text-slate-800 tracking-tight">Nuevo Registro</h2>
-        <div class="flex justify-between bg-slate-200/70 rounded-xl p-1 mb-4 shadow-inner">
-            <button id="btn-tipo-gasto" class="w-1/3 py-2 rounded-lg font-semibold text-rose-600 bg-white shadow-sm transition-all text-[11px]">Gasto</button>
-            <button id="btn-tipo-ingreso" class="w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]">Ingreso</button>
-            <button id="btn-tipo-ahorro" class="w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]">Ahorro</button>
+        <h2 class="text-base font-bold mb-3 text-slate-100 tracking-tight">Nuevo Registro</h2>
+        <div class="glass-pill flex justify-between rounded-xl p-1 mb-4">
+            <button id="btn-tipo-gasto" class="w-1/3 py-2 rounded-lg font-semibold text-orange-400 bg-white/10 shadow-sm transition-all text-[11px]">Gasto</button>
+            <button id="btn-tipo-ingreso" class="w-1/3 py-2 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all text-[11px]">Ingreso</button>
+            <button id="btn-tipo-ahorro" class="w-1/3 py-2 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all text-[11px]">Ahorro</button>
         </div>
-        
+
         <form id="mainForm" class="w-full">
             <input type="hidden" id="tipoRegistro" value="gasto">
-            
+
             <!-- CORRECCIÓN: CSS Grid asegura que no se salga de la pantalla -->
             <div class="grid grid-cols-3 gap-3 mb-3 w-full">
                 <div class="col-span-1">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Moneda</label>
-                    <select id="moneda" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-2 border bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+                    <select id="moneda" required class="glass-input glass-select block w-full rounded-xl py-2 px-2 border font-medium text-sm outline-none">
                         <option value="ARS">ARS</option>
                         <option value="USD">USD</option>
                     </select>
                 </div>
                 <div class="col-span-2 min-w-0">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha</label>
-                    <input type="date" id="fecha" required class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-2 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
+                    <input type="date" id="fecha" required class="glass-input block w-full min-w-0 rounded-xl py-2 px-2 border font-medium text-sm outline-none">
                 </div>
             </div>
-            
+
             <div id="dynamicFields"></div>
-            
+
             <div class="mb-3" id="montoContainer">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" id="montoLabel">Monto Total</label>
                 <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-medium text-base whitespace-nowrap" id="currencySymbol">$</div>
-                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="currency-input block w-full min-w-0 rounded-xl border border-slate-200 shadow-sm pr-3 py-2 focus:ring-2 focus:ring-indigo-500/20 bg-white outline-none">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-300 font-medium text-base whitespace-nowrap" id="currencySymbol">$</div>
+                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="glass-input currency-input block w-full min-w-0 rounded-xl border pr-3 py-2 focus:ring-2 focus:ring-violet-400/30 outline-none">
                     <input type="hidden" id="montoReal" name="monto">
                 </div>
             </div>
             <div class="mb-5">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Notas</label>
-                <input type="text" id="notas" placeholder="Opcional..." class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-3 border focus:ring-indigo-500 text-sm text-slate-700 outline-none">
+                <input type="text" id="notas" placeholder="Opcional..." class="glass-input block w-full min-w-0 rounded-xl py-2 px-3 border text-sm outline-none">
             </div>
-            <button type="submit" id="btnSubmit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl flex justify-center items-center gap-2 hover:bg-indigo-700 shadow-md shadow-indigo-200 active:scale-[0.98] transition-all text-sm">
+            <button type="submit" id="btnSubmit" class="w-full bg-gradient-to-r from-violet-500 to-cyan-500 text-white font-bold py-3 px-4 rounded-xl flex justify-center items-center gap-2 hover:from-violet-400 hover:to-cyan-400 shadow-lg shadow-violet-950/40 active:scale-[0.98] transition-all text-sm">
                 <span id="btnText">Guardar Registro</span>
                 <svg id="spinner" class="animate-spin hidden h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
@@ -77,25 +77,25 @@ function setTipo(tipo) {
     
     ['gasto', 'ingreso', 'ahorro'].forEach(b => {
         const btn = document.getElementById(`btn-tipo-${b}`);
-        btn.className = 'w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]';
+        btn.className = 'w-1/3 py-2 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all text-[11px]';
     });
-    
+
     const activeBtn = document.getElementById(`btn-tipo-${tipo}`);
-    activeBtn.classList.add('bg-white', 'shadow-sm', 'font-semibold');
-    
+    activeBtn.classList.add('bg-white/10', 'shadow-sm', 'font-semibold');
+
     document.getElementById('montoInput').readOnly = false;
     document.getElementById('montoLabel').innerText = "Monto Total";
-    
+
     if(tipo === 'gasto') {
-        activeBtn.classList.add('text-rose-600');
+        activeBtn.classList.add('text-orange-400');
         dynamicFields.innerHTML = getFormGastoHTML();
         initFormGasto();
     } else if(tipo === 'ingreso') {
-        activeBtn.classList.add('text-emerald-600');
+        activeBtn.classList.add('text-teal-400');
         dynamicFields.innerHTML = getFormIngresoHTML();
         initFormIngreso();
     } else if(tipo === 'ahorro') {
-        activeBtn.classList.add('text-indigo-600');
+        activeBtn.classList.add('text-cyan-400');
         dynamicFields.innerHTML = getFormAhorroHTML();
         initFormAhorro();
     }
