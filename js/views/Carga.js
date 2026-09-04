@@ -110,8 +110,9 @@ function setupCurrencyInput() {
     const updateSymbol = () => {
         const isUSD = currencySelect.value === 'USD';
         symbolSpan.innerText = isUSD ? 'u$s' : '$';
-        // Padding dinámico de Claude Code
-        input.style.paddingLeft = isUSD ? '2.5rem' : '1.75rem';
+        // Padding dinámico real: se mide el ancho que ocupa el símbolo ("$" vs "u$s")
+        // en vez de usar un valor fijo, para que el monto nunca quede tapado.
+        input.style.paddingLeft = `${symbolSpan.getBoundingClientRect().width + 12}px`;
         input.dispatchEvent(new Event('input'));
     };
 
