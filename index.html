@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Mis Finanzas Pro</title>
     
-    <!-- Etiquetas PWA para iOS y Android -->
     <link rel="manifest" href="manifest.json">
-    <<meta name="mobile-web-app-capable" content="yes">
+    <!-- CORRECCIÓN: Etiqueta meta arreglada -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2933/2933116.png">
@@ -16,11 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-900 text-slate-800 antialiased flex justify-center items-center h-screen overflow-hidden">
+<body class="bg-slate-900 text-slate-800 antialiased">
     
-    <div class="w-full max-w-md h-full sm:h-[95vh] sm:rounded-[2rem] bg-slate-50 flex flex-col relative overflow-hidden shadow-2xl sm:border-[6px] sm:border-slate-800">
+    <!-- CORRECCIÓN: mx-auto y h-[100dvh] asegura que quede en el centro sin desbordar -->
+    <div class="w-full max-w-md mx-auto h-[100dvh] sm:h-[95vh] sm:my-[2.5vh] sm:rounded-[2rem] bg-slate-50 flex flex-col relative overflow-hidden shadow-2xl sm:border-[6px] sm:border-slate-800">
         
-        <header class="bg-slate-900 px-4 py-4 pt-10 sm:pt-4 text-center relative z-20 shrink-0 shadow-sm">
+        <header class="bg-slate-900 px-4 py-4 pt-12 sm:pt-4 text-center relative z-20 shrink-0 shadow-sm">
             <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-400 via-slate-900 to-slate-900"></div>
             <h1 class="text-xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-400 relative z-10">Mis Finanzas</h1>
         </header>
@@ -30,14 +31,13 @@
             <p class="text-slate-500 font-bold text-xs animate-pulse">Sincronizando...</p>
         </div>
 
-        <!-- Área con deslizamiento -->
-        <div id="scroll-area" class="flex-1 overflow-x-hidden overflow-y-auto no-scrollbar relative pb-20 z-10">
+        <div id="scroll-area" class="flex-1 overflow-x-hidden overflow-y-auto no-scrollbar relative pb-24 z-10">
             <div id="view-home" class="tab-content active p-4"></div>
             <div id="view-dash" class="tab-content p-4"></div>
             <div id="view-history" class="tab-content p-4"></div>
         </div>
 
-        <nav class="absolute bottom-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-200 flex justify-around p-1.5 pb-6 sm:pb-3 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.03)]">
+        <nav class="absolute bottom-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-200 flex justify-around p-1.5 pb-8 sm:pb-3 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.03)]">
             <button data-tab="view-home" class="nav-btn active flex flex-col items-center justify-center text-slate-400 w-1/3 py-1.5 transition-all">
                 <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"></path></svg>
                 <span class="text-[9px] font-bold tracking-wide">Cargar</span>
@@ -59,7 +59,6 @@
     </div>
     
     <script>
-        // Registrar Service Worker para habilitar la instalación de la App
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js');
         }

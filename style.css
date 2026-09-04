@@ -1,11 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-body { font-family: 'Inter', sans-serif; }
+
+/* BLOQUEO DE ARRASTRE Y REBOTE NATIVO */
+html, body { 
+    font-family: 'Inter', sans-serif; 
+    overscroll-behavior: none; 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 .tab-content { display: none; }
-.tab-content.active { display: block; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
 .nav-btn.active { color: #4f46e5; }
+
 #toast { transition: opacity 0.3s ease-in-out, transform 0.3s ease; }
 
 .currency-input { font-size: 1.25rem; font-weight: 700; color: #0f172a; letter-spacing: -0.025em; }
@@ -25,4 +36,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 @keyframes slidePrev {
     from { opacity: 0; transform: translateX(-30px); }
     to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
 }

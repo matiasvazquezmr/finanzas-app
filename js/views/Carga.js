@@ -14,20 +14,19 @@ export function renderCarga() {
             <button id="btn-tipo-ahorro" class="w-1/3 py-2 rounded-lg font-medium text-slate-500 hover:text-slate-700 transition-all text-[11px]">Ahorro</button>
         </div>
         
-        <!-- Contenedor del form para animaciones de swipe interno -->
-        <form id="mainForm" class="overflow-hidden">
+        <form id="mainForm" class="w-full">
             <input type="hidden" id="tipoRegistro" value="gasto">
             
-            <!-- CORRECCIÓN FECHA: min-w-0 y w-[35%] / w-[65%] -->
-            <div class="flex gap-3 mb-3 w-full">
-                <div class="w-[35%] shrink-0">
+            <!-- CORRECCIÓN: CSS Grid asegura que no se salga de la pantalla -->
+            <div class="grid grid-cols-3 gap-3 mb-3 w-full">
+                <div class="col-span-1">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Moneda</label>
                     <select id="moneda" required class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-2 border bg-white focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                         <option value="ARS">ARS</option>
                         <option value="USD">USD</option>
                     </select>
                 </div>
-                <div class="w-[65%] min-w-0">
+                <div class="col-span-2 min-w-0">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha</label>
                     <input type="date" id="fecha" required class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-2 border focus:ring-indigo-500 font-medium text-slate-700 text-sm outline-none">
                 </div>
@@ -37,15 +36,15 @@ export function renderCarga() {
             
             <div class="mb-3" id="montoContainer">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" id="montoLabel">Monto Total</label>
-                <div class="relative">
+                <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-medium text-base whitespace-nowrap" id="currencySymbol">$</div>
-                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="currency-input block w-full min-w-0 rounded-xl border border-slate-200 shadow-sm pl-8 pr-3 py-2 focus:ring-2 focus:ring-indigo-500/20 bg-white outline-none">
+                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="currency-input block w-full min-w-0 rounded-xl border border-slate-200 shadow-sm pr-3 py-2 focus:ring-2 focus:ring-indigo-500/20 bg-white outline-none">
                     <input type="hidden" id="montoReal" name="monto">
                 </div>
             </div>
             <div class="mb-5">
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Notas</label>
-                <input type="text" id="notas" placeholder="Opcional..." class="block w-full rounded-xl border-slate-200 shadow-sm py-2 px-3 border focus:ring-indigo-500 text-sm text-slate-700 outline-none">
+                <input type="text" id="notas" placeholder="Opcional..." class="block w-full min-w-0 rounded-xl border-slate-200 shadow-sm py-2 px-3 border focus:ring-indigo-500 text-sm text-slate-700 outline-none">
             </div>
             <button type="submit" id="btnSubmit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl flex justify-center items-center gap-2 hover:bg-indigo-700 shadow-md shadow-indigo-200 active:scale-[0.98] transition-all text-sm">
                 <span id="btnText">Guardar Registro</span>
@@ -109,15 +108,14 @@ function setupCurrencyInput() {
     const symbolSpan = document.getElementById('currencySymbol');
 
     const updateSymbol = () => {
-        symbolSpan.innerText = currencySelect.value === 'USD' ? 'u$s' : '$';
-        // El símbolo puede cambiar de ancho (ej: "$" vs "u$s"), así que el
-        // padding del input se recalcula para que el monto nunca quede tapado.
-        input.style.paddingLeft = `${symbolSpan.getBoundingClientRect().width + 12}px`;
+        const isUSD = currencySelect.value === 'USD';
+        symbolSpan.innerText = isUSD ? 'u$s' : '$';
+        // Padding dinámico de Claude Code
+        input.style.paddingLeft = isUSD ? '2.5rem' : '1.75rem';
         input.dispatchEvent(new Event('input'));
     };
 
     currencySelect.addEventListener('change', updateSymbol);
-    updateSymbol();
 
     input.addEventListener('input', (e) => {
         if(input.readOnly) return;
@@ -133,6 +131,8 @@ function setupCurrencyInput() {
         hiddenInput.value = rawValue;
         input.value = currencyFormatter(currencySelect.value).format(rawValue).replace(/[a-zA-Z\$\s]/g, "");
     });
+    
+    updateSymbol();
 }
 
 async function handleFormSubmit() {
