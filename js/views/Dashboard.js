@@ -2,7 +2,7 @@ import { loadData } from '../store.js';
 import { currencyFormatter } from '../utils.js';
 import { meses } from '../config.js';
 
-const PALETTE = ['#8b5cf6', '#22d3ee', '#2dd4bf', '#fb923c', '#f472b6', '#a3e635', '#60a5fa', '#fbbf24', '#f87171', '#34d399'];
+const PALETTE = ['#10b981', '#0ea5e9', '#6366f1', '#f59e0b', '#ec4899', '#14b8a6', '#8b5cf6', '#3b82f6', '#f43f5e', '#84cc16'];
 
 let chartCategorias = null;
 let chartEvolucion = null;
@@ -19,14 +19,14 @@ export function renderDashboard() {
 
     container.innerHTML = `
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-base font-bold text-slate-100 tracking-tight flex items-center gap-2">
+            <h2 class="text-sm font-semibold text-slate-100 tracking-tight flex items-center gap-2">
                 Resumen
-                <select id="dash-moneda" class="glass-pill glass-select text-slate-200 text-[10px] font-bold rounded-lg pl-2 py-1 outline-none">
+                <select id="dash-moneda" class="glass-pill glass-select text-slate-300 text-[10px] font-bold rounded-lg pl-2 py-1 outline-none">
                     <option value="ARS">ARS</option>
                     <option value="USD">USD</option>
                 </select>
             </h2>
-            <button id="btn-update-dash" class="glass-pill text-violet-300 text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all">
+            <button id="btn-update-dash" class="glass-pill text-slate-300 hover:text-white text-[10px] font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all">
                 🔄 Actualizar
             </button>
         </div>
@@ -47,29 +47,36 @@ export function renderDashboard() {
                 <select id="period-mes" class="glass-input glass-select block w-full rounded-lg py-1.5 px-2 border text-xs outline-none"></select>
                 <select id="period-anio" class="glass-input glass-select block w-full rounded-lg py-1.5 px-2 border text-xs outline-none"></select>
             </div>
-            <p id="period-label" class="text-[10px] text-slate-500 font-semibold mt-2 text-center uppercase tracking-wider"></p>
+            <p id="period-label" class="text-[10px] text-slate-400 font-semibold mt-2 text-center uppercase tracking-wider"></p>
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-5">
             <div class="glass-card p-3 rounded-xl relative overflow-hidden">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Ingresos</p>
-                <p class="text-lg font-black text-teal-400 tracking-tight" id="dash-ingresos">$0</p>
+                <p class="text-lg font-black text-emerald-400 tracking-tight" id="dash-ingresos">$0</p>
             </div>
             <div class="glass-card p-3 rounded-xl relative overflow-hidden">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Gastos</p>
-                <p class="text-lg font-black text-orange-400 tracking-tight" id="dash-gastos">$0</p>
+                <p class="text-lg font-black text-rose-400 tracking-tight" id="dash-gastos">$0</p>
             </div>
             <div class="glass-card p-3 rounded-xl relative overflow-hidden">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Total Ahorrado</p>
-                <p class="text-lg font-black text-cyan-400 tracking-tight" id="dash-ahorrado">$0</p>
+                <p class="text-lg font-black text-sky-400 tracking-tight" id="dash-ahorrado">$0</p>
             </div>
             <div class="glass-card p-3 rounded-xl relative overflow-hidden">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Vs Período Ant.</p>
                 <p class="text-base font-black text-slate-200 tracking-tight mt-0.5" id="dash-sueldo">-</p>
             </div>
-            <div class="glass-card bg-gradient-to-br from-violet-600/70 to-cyan-600/50 p-3 rounded-xl shadow-lg shadow-violet-950/40 relative overflow-hidden col-span-2">
-                <p class="text-[9px] text-violet-100/80 font-bold uppercase tracking-wider mb-0.5">Saldo Total</p>
-                <p class="text-lg font-black text-white tracking-tight" id="dash-saldo">$0</p>
+            <div class="glass-card p-3.5 rounded-xl border border-emerald-500/20 bg-gradient-to-b from-[#131d2e] to-[#0e1624] relative overflow-hidden col-span-2">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Saldo Neto</p>
+                        <p class="text-xl font-black text-white tracking-tight" id="dash-saldo">$0</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                        <span class="text-sm font-bold">$</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -132,8 +139,8 @@ export function renderDashboard() {
 function updatePeriodChipStyles() {
     document.querySelectorAll('.period-chip').forEach(btn => {
         const isActive = btn.dataset.period === periodMode;
-        btn.classList.toggle('bg-white/10', isActive);
-        btn.classList.toggle('text-violet-300', isActive);
+        btn.classList.toggle('bg-white/[0.08]', isActive);
+        btn.classList.toggle('text-emerald-400', isActive);
         btn.classList.toggle('text-slate-400', !isActive);
     });
 }
@@ -292,7 +299,7 @@ function computeAndRender() {
     if (sueldoAnterior > 0) {
         const varPct = ((sueldoActual - sueldoAnterior) / sueldoAnterior) * 100;
         variacionSueldo = `${varPct >= 0 ? '↗' : '↘'} ${Math.abs(varPct).toFixed(1)}%`;
-        elSueldo.className = `text-base font-black tracking-tight mt-0.5 ${varPct >= 0 ? 'text-teal-400' : 'text-orange-400'}`;
+        elSueldo.className = `text-base font-black tracking-tight mt-0.5 ${varPct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
     } else {
         elSueldo.className = 'text-base font-black tracking-tight mt-0.5 text-slate-200';
     }
@@ -344,9 +351,9 @@ function renderEvolucionChart(data, selectedMoneda) {
         data: {
             labels: meses.map(m => m.substring(0, 3)),
             datasets: [
-                { label: 'Ing', data: evoMeses.map(e => e.ing), borderColor: '#2dd4bf', backgroundColor: '#2dd4bf', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 },
-                { label: 'Gas', data: evoMeses.map(e => e.gas), borderColor: '#fb923c', backgroundColor: '#fb923c', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 },
-                { label: 'Aho', data: evoMeses.map(e => e.aho), borderColor: '#22d3ee', backgroundColor: '#22d3ee', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 }
+                { label: 'Ing', data: evoMeses.map(e => e.ing), borderColor: '#10b981', backgroundColor: '#10b981', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 },
+                { label: 'Gas', data: evoMeses.map(e => e.gas), borderColor: '#f43f5e', backgroundColor: '#f43f5e', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 },
+                { label: 'Aho', data: evoMeses.map(e => e.aho), borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.35, borderWidth: 2, pointRadius: 2, pointHoverRadius: 4 }
             ]
         },
         options: {

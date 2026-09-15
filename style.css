@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* =========================================================
-   DISEÑO "GLASS" ESTILO iOS — fondo oscuro + vidrio esmerilado
-   Paleta: violeta/cian (marca) · teal (ingreso) · naranja (gasto)
-           · cian (ahorro) · rosa (errores)
+   DISEÑO FINTECH DARK — Estilo Linear / Stripe
+   Paleta: Carbón técnico (#090d16), Esmeralda (#10b981),
+           Coral/Ámbar (#f43f5e / #f59e0b), Cielo (#0ea5e9)
    ========================================================= */
 
 :root { color-scheme: dark; }
@@ -19,9 +19,7 @@ html, body {
 }
 
 body {
-    background: radial-gradient(circle at 25% 15%, #241a4a 0%, transparent 45%),
-                radial-gradient(circle at 80% 85%, #0d3b45 0%, transparent 50%),
-                #020617;
+    background-color: #090d16;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -29,7 +27,7 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
-.nav-btn.active { color: #a78bfa; }
+.nav-btn.active { color: #10b981; }
 
 #toast { transition: opacity 0.3s ease-in-out, transform 0.3s ease; }
 
@@ -39,52 +37,40 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* --- Blobs de fondo tipo "aurora" (glow difuminado detrás del vidrio) --- */
-.aurora-blob {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(60px);
-    pointer-events: none;
-    animation: auroraFloat 14s ease-in-out infinite alternate;
-}
-
-/* --- Superficies de vidrio esmerilado --- */
+/* --- Superficies de tarjetas y paneles estructurados --- */
 .glass-card {
-    background: rgba(255, 255, 255, 0.06);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    background: #111726;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
 .glass-panel {
-    background: rgba(255, 255, 255, 0.07);
-    -webkit-backdrop-filter: blur(30px);
-    backdrop-filter: blur(30px);
+    background: #0d131f;
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .glass-pill {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: #141b2a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* --- Inputs / selects de vidrio --- */
+/* --- Inputs / selects refinados --- */
 .glass-input {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: #0a0f18;
+    border: 1px solid rgba(255, 255, 255, 0.09);
     color: #f1f5f9;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.glass-input::placeholder { color: #64748b; }
+.glass-input::placeholder { color: #475569; }
 .glass-input:focus {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(167, 139, 250, 0.5);
+    background: #0f1724;
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
 }
-/* El navegador pinta el ícono nativo del date picker en negro por defecto;
-   invert+brightness lo vuelve legible sobre el vidrio oscuro. */
+/* Date picker nativo legible sobre fondo oscuro */
 .glass-input::-webkit-calendar-picker-indicator {
-    filter: invert(1) brightness(1.4);
-    opacity: 0.8;
+    filter: invert(1) brightness(1.2);
+    opacity: 0.7;
 }
 
 .glass-select {
@@ -96,9 +82,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
     background-size: 1rem;
     padding-right: 2.2rem;
 }
-.glass-select option { background-color: #0f172a; color: #f1f5f9; }
+.glass-select option { background-color: #0b1019; color: #f1f5f9; }
 
-/* Animaciones de Deslizamiento (Swipe Glass) */
+/* Animaciones de Deslizamiento (Swipe) */
 .slide-next { animation: slideNext 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 .slide-prev { animation: slidePrev 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 
@@ -114,9 +100,4 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(3px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes auroraFloat {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(15px, -20px) scale(1.08); }
 }

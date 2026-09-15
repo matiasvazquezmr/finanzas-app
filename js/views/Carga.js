@@ -7,9 +7,9 @@ import { postData } from '../api.js';
 export function renderCarga() {
     const container = document.getElementById('view-home');
     container.innerHTML = `
-        <h2 class="text-base font-bold mb-3 text-slate-100 tracking-tight">Nuevo Registro</h2>
+        <h2 class="text-sm font-semibold mb-3 text-slate-100 tracking-tight">Nuevo Registro</h2>
         <div class="glass-pill flex justify-between rounded-xl p-1 mb-4">
-            <button id="btn-tipo-gasto" class="w-1/3 py-2 rounded-lg font-semibold text-orange-400 bg-white/10 shadow-sm transition-all text-[11px]">Gasto</button>
+            <button id="btn-tipo-gasto" class="w-1/3 py-2 rounded-lg font-semibold text-rose-400 bg-white/[0.08] shadow-sm transition-all text-[11px]">Gasto</button>
             <button id="btn-tipo-ingreso" class="w-1/3 py-2 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all text-[11px]">Ingreso</button>
             <button id="btn-tipo-ahorro" class="w-1/3 py-2 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all text-[11px]">Ahorro</button>
         </div>
@@ -17,7 +17,7 @@ export function renderCarga() {
         <form id="mainForm" class="w-full">
             <input type="hidden" id="tipoRegistro" value="gasto">
 
-            <!-- CORRECCIÓN: CSS Grid asegura que no se salga de la pantalla -->
+            <!-- CSS Grid asegura que no se salga de la pantalla -->
             <div class="grid grid-cols-3 gap-3 mb-3 w-full">
                 <div class="col-span-1">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Moneda</label>
@@ -38,7 +38,7 @@ export function renderCarga() {
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" id="montoLabel">Monto Total</label>
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-300 font-medium text-base whitespace-nowrap" id="currencySymbol">$</div>
-                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="glass-input currency-input block w-full min-w-0 rounded-xl border pr-3 py-2 focus:ring-2 focus:ring-violet-400/30 outline-none">
+                    <input type="text" id="montoInput" inputmode="decimal" placeholder="0,00" required class="glass-input currency-input block w-full min-w-0 rounded-xl border pr-3 py-2 focus:ring-2 focus:ring-emerald-500/20 outline-none">
                     <input type="hidden" id="montoReal" name="monto">
                 </div>
             </div>
@@ -46,9 +46,9 @@ export function renderCarga() {
                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Notas</label>
                 <input type="text" id="notas" placeholder="Opcional..." class="glass-input block w-full min-w-0 rounded-xl py-2 px-3 border text-sm outline-none">
             </div>
-            <button type="submit" id="btnSubmit" class="w-full bg-gradient-to-r from-violet-500 to-cyan-500 text-white font-bold py-3 px-4 rounded-xl flex justify-center items-center gap-2 hover:from-violet-400 hover:to-cyan-400 shadow-lg shadow-violet-950/40 active:scale-[0.98] transition-all text-sm">
+            <button type="submit" id="btnSubmit" class="w-full bg-white text-slate-950 font-bold py-3 px-4 rounded-xl flex justify-center items-center gap-2 hover:bg-slate-100 shadow-md shadow-black/30 active:scale-[0.98] transition-all text-sm tracking-tight">
                 <span id="btnText">Guardar Registro</span>
-                <svg id="spinner" class="animate-spin hidden h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg id="spinner" class="animate-spin hidden h-4 w-4 text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </form>
     `;
@@ -81,21 +81,21 @@ function setTipo(tipo) {
     });
 
     const activeBtn = document.getElementById(`btn-tipo-${tipo}`);
-    activeBtn.classList.add('bg-white/10', 'shadow-sm', 'font-semibold');
+    activeBtn.classList.add('bg-white/[0.08]', 'shadow-sm', 'font-semibold');
 
     document.getElementById('montoInput').readOnly = false;
     document.getElementById('montoLabel').innerText = "Monto Total";
 
     if(tipo === 'gasto') {
-        activeBtn.classList.add('text-orange-400');
+        activeBtn.classList.add('text-rose-400');
         dynamicFields.innerHTML = getFormGastoHTML();
         initFormGasto();
     } else if(tipo === 'ingreso') {
-        activeBtn.classList.add('text-teal-400');
+        activeBtn.classList.add('text-emerald-400');
         dynamicFields.innerHTML = getFormIngresoHTML();
         initFormIngreso();
     } else if(tipo === 'ahorro') {
-        activeBtn.classList.add('text-cyan-400');
+        activeBtn.classList.add('text-sky-400');
         dynamicFields.innerHTML = getFormAhorroHTML();
         initFormAhorro();
     }

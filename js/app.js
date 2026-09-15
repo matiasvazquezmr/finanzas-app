@@ -58,12 +58,12 @@ function startApp() {
 
     const changeTab = (targetId, animationClass = 'slide-next') => {
         navButtons.forEach(b => {
-            b.classList.remove('active', 'text-violet-400');
+            b.classList.remove('active', 'text-emerald-400');
             b.classList.add('text-slate-400');
         });
         const btn = document.querySelector(`.nav-btn[data-tab="${targetId}"]`);
         if(btn) {
-            btn.classList.add('active', 'text-violet-400');
+            btn.classList.add('active', 'text-emerald-400');
             btn.classList.remove('text-slate-400');
         }
         
