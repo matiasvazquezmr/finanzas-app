@@ -1,4 +1,4 @@
-import { fetchData } from '../api.js';
+import { loadData } from '../store.js';
 import { currencyFormatter } from '../utils.js';
 
 export function renderHistorial() {
@@ -22,14 +22,14 @@ export function renderHistorial() {
         </div>
     `;
 
-    document.getElementById('btn-update-history').addEventListener('click', loadHistorialData);
+    document.getElementById('btn-update-history').addEventListener('click', () => loadHistorialData(true));
 }
 
-export async function loadHistorialData() {
+export async function loadHistorialData(forceRefresh = false) {
     const listEl = document.getElementById('historyList');
-    
+
     try {
-        const data = await fetchData();
+        const data = await loadData({ force: forceRefresh });
         const allMoves = [
             ...data.ingresos.map(i => ({...i, _tipo: 'ingreso', _fecha: new Date(i.Fecha)})),
             ...data.gastos.map(g => ({...g, _tipo: 'gasto', _fecha: new Date(g.Fecha)})),
