@@ -59,13 +59,17 @@ export function renderDashboard() {
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Gastos</p>
                 <p class="text-lg font-black text-orange-400 tracking-tight" id="dash-gastos">$0</p>
             </div>
-            <div class="glass-card bg-gradient-to-br from-violet-600/70 to-cyan-600/50 p-3 rounded-xl shadow-lg shadow-violet-950/40 relative overflow-hidden">
-                <p class="text-[9px] text-violet-100/80 font-bold uppercase tracking-wider mb-0.5">Saldo Total</p>
-                <p class="text-lg font-black text-white tracking-tight" id="dash-saldo">$0</p>
+            <div class="glass-card p-3 rounded-xl relative overflow-hidden">
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Total Ahorrado</p>
+                <p class="text-lg font-black text-cyan-400 tracking-tight" id="dash-ahorrado">$0</p>
             </div>
             <div class="glass-card p-3 rounded-xl relative overflow-hidden">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Vs Período Ant.</p>
                 <p class="text-base font-black text-slate-200 tracking-tight mt-0.5" id="dash-sueldo">-</p>
+            </div>
+            <div class="glass-card bg-gradient-to-br from-violet-600/70 to-cyan-600/50 p-3 rounded-xl shadow-lg shadow-violet-950/40 relative overflow-hidden col-span-2">
+                <p class="text-[9px] text-violet-100/80 font-bold uppercase tracking-wider mb-0.5">Saldo Total</p>
+                <p class="text-lg font-black text-white tracking-tight" id="dash-saldo">$0</p>
             </div>
         </div>
 
@@ -243,7 +247,7 @@ function computeAndRender() {
     const current = getPeriodBounds();
     const previous = getPreviousBounds(current);
 
-    let sumIngresos = 0, sumGastos = 0, sueldoActual = 0, sueldoAnterior = 0;
+    let sumIngresos = 0, sumGastos = 0, sumAhorros = 0, sueldoActual = 0, sueldoAnterior = 0;
     let gastosPorCat = {};
 
     data.ingresos.forEach(i => {
@@ -270,9 +274,18 @@ function computeAndRender() {
         }
     });
 
+    data.ahorros.forEach(a => {
+        if (a['Moneda'] !== selectedMoneda) return;
+        const d = new Date(a.Fecha);
+        if (d >= current.start && d <= current.end) {
+            sumAhorros += parseFloat(a['Total Invertido'] || 0);
+        }
+    });
+
     document.getElementById('dash-ingresos').innerText = Formatter.format(sumIngresos).replace(/[a-zA-Z\s]/g, "");
     document.getElementById('dash-gastos').innerText = Formatter.format(sumGastos).replace(/[a-zA-Z\s]/g, "");
-    document.getElementById('dash-saldo').innerText = Formatter.format(sumIngresos - sumGastos).replace(/[a-zA-Z\s]/g, "");
+    document.getElementById('dash-ahorrado').innerText = Formatter.format(sumAhorros).replace(/[a-zA-Z\s]/g, "");
+    document.getElementById('dash-saldo').innerText = Formatter.format(sumIngresos - sumGastos - sumAhorros).replace(/[a-zA-Z\s]/g, "");
 
     let variacionSueldo = "-";
     const elSueldo = document.getElementById('dash-sueldo');
